@@ -46,4 +46,20 @@
 .imgcontainer{
 	text-align: center;
 }
-.error {color: #FF0000;}
+.error {
+	color: #FF0000;
+}
+.menuOfLeft{
+	text-align: center;
+	font-weight: bold;
+}
+.onlyBorder{
+	border-bottom: 2px solid #A9A9A9;
+
+}
+.textDecration a{
+	text-decoration: none;
+}
+.readView{
+	display: none;
+}
