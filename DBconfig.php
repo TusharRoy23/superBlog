@@ -1,7 +1,7 @@
 <?php
-	$conn = mysqli_connect("localhost","root","","superblog"); 
-	if(!$conn)
+	$conn = new mysqli("localhost","root","","superblog"); 
+	if($conn->connect_error)
 	{
-		die("connection failed".mysqli_connect_error());
+		die("connection failed".$conn->connect_error());
 	}
 ?>
