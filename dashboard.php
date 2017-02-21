@@ -26,13 +26,13 @@
 		<div class="col-lg-12 col-sm-12 col-md-12 leftRightPaddingSetZero" id="dashboard">
 			<?php 
 			//echo $_SESSION['userID'];
-			if($_SESSION['userID'] != null){
+			if($_SESSION['userID'] != ""){
 
 				include_once('headerAfterLogin.php');
 			}
 			else{
 				include_once('header.php');
-				$_SESSION['userID'] = null;
+				$_SESSION['userID'] = "";
 			}
 			?>
 			<div class="col-lg-12 col-md-12 col-sm-12 leftRightPaddingSetZero" style="margin-top: 8%;">
