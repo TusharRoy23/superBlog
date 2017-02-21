@@ -5,87 +5,85 @@
 	$usernameErr = $passwordErr = $fullnameErr = $emailErr = "";
 	$username = $password = $fullname = $email = "";
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
-		$valid = true;
-		if (empty($_POST["username"])) {
-			$valid = false;
-			$usernameErr = "username is required";
-		}
-		else{
-			$username = check_inputs($_POST["username"]);
-			
-			//preg_match("/^[a-zA-Z ]*$/",$username)
+			$valid = true;
+			if (empty($_POST["username"])) {
+				$valid = false;
+				$usernameErr = "username is required";
+			}
+			else{
+				$username = check_inputs($_POST["username"]);
 				
-    		if( !preg_match('/^[a-zA-Z]{4,}+$/', $username)){
-    			$valid = false;
-    			$usernameErr = "Only letters, white space allowed and letters length must be 4 or more than that";
-    		}
-    		else{
-    			$valid = false;
-    			$sql = "SELECT * from users where username = ?";
-    			$stmt = $conn->prepare($sql);
-    			$stmt->bind_param("s", $username);
-    			$stmt->execute();
-    			$stmt->store_result(); //store the result first
-    			$check_username = $stmt->num_rows; //count the rows
-    			//$query = mysqli_query($conn, $sql);
-    			//$check_username = mysqli_num_rows($query);
-    			if($check_username > 0){
-    				$usernameErr = "This Username is already taken";
-    				$_SESSION['errMsg'] = "This Username is already taken";
-    			}
-    			else{
-    				$valid = true;
-    			}
-    			$stmt->close();
-    		}
-		}
-		if (empty($_POST["password"])) {
-			$passwordErr = "password is required";
-			$valid = false;
-		}
-		else{
-			$password = check_inputs($_POST["password"]);
-			if(preg_match("/^.*(?=.{8,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/", $password) === 0){
-				$passwordErr = '<p class="errText">Password must be at least 8 characters and must contain at least one lower case letter, one upper case letter and one digit</p>';
+				//preg_match("/^[a-zA-Z ]*$/",$username)
+					//
+	    		if( !preg_match('/^[a-zA-Z]{4,}+$/', $username)){
+	    			$valid = false;
+	    			$usernameErr = "Only letters, no space allowed and letters length must be 4 or more than that";
+	    		}
+	    		else{
+	    			$valid = false;
+	    			$sql = "SELECT * from users where username = ?";
+	    			$stmt = $conn->prepare($sql);
+	    			$stmt->bind_param("s", $username);
+	    			$stmt->execute();
+	    			$stmt->store_result(); //store the result first
+	    			$check_username = $stmt->num_rows; //count the rows
+	    			if($check_username > 0){
+	    				$usernameErr = "This Username is already taken";
+	    				$_SESSION['errMsg'] = "This Username is already taken";
+	    			}
+	    			else{
+	    				$valid = true;
+	    			}
+	    			$stmt->close();
+	    		}
+			}
+			if (empty($_POST["password"])) {
+				$passwordErr = "password is required";
 				$valid = false;
 			}
-    		else{
-    			$valid = true;
-    		}
-		}
-		if (empty($_POST["fullname"])) {
-			$fullnameErr = "fullname is required";
-			$valid = false;
-		}
-		else{
-			$fullname = check_inputs($_POST["fullname"]);
-			if( !preg_match('/^[a-zA-Z]{4,}+$/', $fullname)){
-    			$valid = false;
-    			$fullnameErr = "Only letters, white space allowed and letters length must be 4 or more than that";
-    		}
-		}
-		if (empty($_POST["email"])) {
-			$emailErr = "email is required";
-			$valid = false;
-		}
-		else{
-			$email = check_inputs($_POST["email"]);
-			if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      			$emailErr = "Invalid email format";
-      			$valid = false;
-   			}
-		}
-		if($valid == true){
-			$pwd = md5($password);
-			$sql = "INSERT INTO users (username, password, fullname, email) values (?, ?, ?, ?)";
-			$stmt = $conn->prepare($sql);
-			$stmt->bind_param("ssss", $username, $pwd, $fullname, $email);
-			$stmt->execute();
-			
-			$_SESSION['errMsg'] = "<font color='green'><b>Now, You can login</b>";
-			$stmt->close();
-			header('Location: login.php');
-		}
+			else{
+				$password = check_inputs($_POST["password"]);
+				if(preg_match("/^.*(?=.{8,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$/", $password) === 0){
+					$passwordErr = '<p class="errText">Password must be at least 8 characters and must contain at least one lower case letter, one upper case letter and one digit</p>';
+					$valid = false;
+				}
+	    		else{
+	    			$valid = true;
+	    		}
+			}
+			if (empty($_POST["fullname"])) {
+				$fullnameErr = "fullname is required";
+				$valid = false;
+			}
+			else{
+				$fullname = check_inputs($_POST["fullname"]);
+				if( !preg_match('/^[a-zA-Z ]{4,}+$/', $fullname)){
+	    			$valid = false;
+	    			$fullnameErr = "Only letters, white space allowed and letters length must be 4 or more than that";
+	    		}
+			}
+			if (empty($_POST["email"])) {
+				$emailErr = "email is required";
+				$valid = false;
+			}
+			else{
+				$email = check_inputs($_POST["email"]);
+				if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+	      			$emailErr = "Invalid email format";
+	      			$valid = false;
+	   			}
+			}
+			if($valid == true){
+				$pwd = md5($password);
+				$sql = "INSERT INTO users (username, password, fullname, email) values (?, ?, ?, ?)";
+				$stmt = $conn->prepare($sql);
+				$stmt->bind_param("ssss", $username, $pwd, $fullname, $email);
+				$stmt->execute();
+				
+				$_SESSION['errMsg'] = "<font color='green'><b>Now, You can login</b>";
+				$stmt->close();
+				//header('Location: login.php');
+			}
 	}
 	function check_inputs($data){
 		$data = trim($data);
@@ -103,6 +101,7 @@
 		<script type="text/javascript" src="/superBlog/assets/js/bootstrap.js"></script>
 		<script type="text/javascript" src="/superBlog/assets/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="/superBlog/style/style.css">
+		<link rel="stylesheet" type="text/css" href="/superBlog/assets/css/bootstrap.css">
 		<script type="text/javascript" src="/superBlog/assets/customJs/readView.js"></script>
 	</head>
 	<body>
