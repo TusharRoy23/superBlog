@@ -9,6 +9,8 @@
 		<script type="text/javascript" src="/superBlog/assets/js/bootstrap.js"></script>
 		<script type="text/javascript" src="/superBlog/assets/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="/superBlog/style/style.css">
+		<link rel="stylesheet" type="text/css" href="/superBlog/assets/css/bootstrap.css">
+		<!-- <script type="text/javascript" src="/superBlog/assets/customJs/readView.js"></script> -->
 	</head>
 	<body>
 		<div class="col-lg-12 col-md-12 col-sm-12 leftRightPaddingSetZero" id="dashboard">
@@ -20,12 +22,9 @@
 					<img src="images/register_now.png" alt="Avatar" class="" style="width: 60%;">
 				</div>
 				<div class="col-lg-6 col-md-6 col-sm-6" style="">
-					
-						<?php
-							session_start();
-							include_once('register.php');
-						?>
-					
+					<?php 
+						include_once ('register.php');
+					?>
 				</div>
 			</div>
 		</div>
