@@ -4,6 +4,7 @@
 	include_once('DBconfig.php');
 	$username = $password = "";
 	$usernameErr = $passwordErr = "";
+	$_SESSION['userID'] = "";
 	$valid = true;
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$valid = true;
@@ -26,10 +27,21 @@
 		if(!empty($username) && !empty($password)){
 			if($valid == true)
 			{
-				$sql = "SELECT * from users where username LIKE '$username' AND password LIKE '". md5($password) . "'";
-				$query = mysqli_query($conn, $sql);
-				$checkUser = mysqli_num_rows($query);
+				$pass = md5($password);
+				$sql = "SELECT * from users where username = ? AND password = ?";
+				$stmt = $conn->prepare($sql);
+				$stmt->bind_param("ss", $username, $pass);
+				$stmt->execute();
+				$result = $stmt->get_result();
+				$checkUser = $result->num_rows;
 				if($checkUser > 0){
+					while($row = $result->fetch_assoc()){
+						$_SESSION['userID'] = $row['userID'];
+						$_SESSION['username'] = $row['username'];
+					}
+					$stmt->free_result();
+					$stmt->close();
+					$conn->close();
 					header('Location: dashboard.php');
 				}
 				else{
@@ -75,7 +87,7 @@
 							<input type="Password" name="password" class="form-control"><br />
 							<span class="error"><?php echo $passwordErr;?></span>
 							<input type="submit" name="submit" class="btn btn-success btn-block" value="Login"><br />
-							<a href="#"><b><u>Not register yet? Register Here..</u></b></a><br />
+							<a href="signUp.php"><b><u>Not register yet? Register Here..</u></b></a><br />
 							<p>
 								<div id="errMsg">
             						<?php if(!empty($_SESSION['errMsg'])) { echo $_SESSION['errMsg']; } ?>
