@@ -41,9 +41,11 @@
 							<div class="col-md-12 col-sm-12 col-lg-12 leftRightPaddingSetZero">
 								<p class="col-md-8 col-sm-8 col-lg-8 leftRightPaddingSetZero"><?php echo $row['uploadDate'] . '   ' . $row['uploadTime']?></p>
 								<?php if($userID == $row['userID']){ 
-										//$_SESSION['threadID'] = $row['threadID'];
+										$_SESSION['threadID'] = $row['threadID'];
+										$_SESSION['threadContent'] = $row['threadContent'];
+										$_SESSION['threadTitle'] = $row['threadTitle'];
 									?>
-									<a href="#" class="col-md-2 col-sm-2 col-lg-2  btn btn-xs btn-primary">Edit</a>
+									<a href="threadEdit.php" target="_blank" class="col-md-2 col-sm-2 col-lg-2  btn btn-xs btn-primary">Edit</a>
 									<a href="delete.php" data-href="" class="col-md-2 col-sm-2 col-lg-2  btn btn-xs btn-danger">Delete</a>
 							</div>
 						<?php } 
@@ -55,6 +57,9 @@
 							
 							<br />
 					<?php }
+					}
+					else{
+						echo "<legend>No Threads<legend>";
 					}
 				?>
 			</div>
@@ -135,57 +140,6 @@
 				</div>
    			</div>
 		</div>
-		<div class = "container"><!--Read the Blog Modal when not Logged In-->
-			<div class="modal fade" id="notLoggedInReadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog" style="overflow-y: initial !important">
-					 <div class="modal-content" style="">
-						  <div class="modal-header">
-							   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							   <h4 class="modal-title stopWordBreaking" id="myModalLabel" style="text-align: center"><b></b></h4>
-						  </div>
-						  <div class="modal-body" style="overflow-y: auto; height: 430px;">
-						   		<p class="col-lg-12 col-sm-12 col-md-12 text-center description stopWordBreaking"></p>
-						   		<p class="col-lg-12 col-sm-12 col-md-12 stopWordBreaking">  
-						   			<form method="POST" action="">
-										<textarea class="form-control" rows="4" name="comment"></textarea><br />
-										<div class="col-lg-8 col-md-8 col-sm-8"></div>
-										<div class="col-lg-12 col-md-12 col-sm-12 onlyBorder" style="padding-bottom: 1%;">
-											<div class="col-md-4 col-sm-4 col-lg-4 col-lg-offset-8">
-														<button  type="button" class="form-control btn btn-xs btn-primary" style="cursor: pointer;" onclick="signupforprofile()">Register</button> 
-											</div>
-											
-										</div>
-									</form>
-						   		</p>
-						   		<div class="col-lg-12 col-sm-12 col-md-12 stopWordBreaking leftRightPaddingSetZero " id="showCommentsInNoneLoggedIn" style="padding-bottom: 1%;">
-						   		</div>
-						  </div>
-						  <div class="modal-footer">
-							  	<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-						  </div>
-					 </div>
-				</div>
-			</div>
-		</div>
-		<div class = "container"><!--Register Modal-->
-			<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog" style="overflow-y: initial !important">
-					 <div class="modal-content" style="">
-						  <div class="modal-header">
-							   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							   <h4 class="modal-title stopWordBreaking" id="myModalLabel" style="text-align: center"><b>Registration</b></h4>
-						  </div>
-						  <div class="modal-body" style="overflow-y: auto; height: 430px;">
-								<?php
-									include_once('register.php');
-								?>
-						  </div>
-						  <div class="modal-footer">
-							  	<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-						  </div>
-					 </div>
-				</div>
-			</div>
-		</div>
+		<?php include_once('modalOfContentReading.php');?>
 	</body>
 </html>
