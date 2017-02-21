@@ -80,3 +80,6 @@ function signupforprofile(){
 	//alert('plz register');
 	$('#registerModal').modal('show');
 }
+function readaftersearch(){
+	$('#notLoggedInReadModal').modal('show');
+}
